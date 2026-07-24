@@ -15,7 +15,7 @@ const routeInfo = {
 
 export default function Header({ mobileMenuOpen, setMobileMenuOpen }) {
   const location = useLocation();
-  const { utcTime, threatCount } = useSimulation();
+  const { systemTime, threatCount } = useSimulation();
   const info = routeInfo[location.pathname] || { title: "REEF", subtitle: "" };
 
   return (
@@ -28,8 +28,20 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen }) {
           <span className="material-symbols-outlined">{mobileMenuOpen ? 'close' : 'menu'}</span>
         </button>
         <div>
-          <h2 className="font-headline-md text-[18px] md:text-headline-md font-bold tracking-tight">{info.title}</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant hidden sm:block">{info.subtitle}</p>
+          {/* Mobile View */}
+          <div className="md:hidden flex flex-col">
+            <div className="flex items-center gap-1.5 text-secondary">
+              <span className="material-symbols-outlined text-[18px]">waves</span>
+              <span className="font-headline-md text-[14px] font-bold tracking-widest uppercase">REEF</span>
+            </div>
+            <span className="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-widest mt-0.5">{info.title}</span>
+          </div>
+
+          {/* Desktop View */}
+          <div className="hidden md:block">
+            <h2 className="font-headline-md md:text-headline-md font-bold tracking-tight">{info.title}</h2>
+            <p className="font-body-md text-body-md text-on-surface-variant text-sm mt-1">{info.subtitle}</p>
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-6">
@@ -37,7 +49,7 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen }) {
           <div className="w-2 h-2 rounded-full bg-tertiary blinking-dot"></div>
           System Status: All Systems Operational
         </div>
-        <div className="font-label-md text-label-md text-secondary">{utcTime}</div>
+        <div className="font-label-md text-label-md text-secondary">{systemTime}</div>
         <button className="relative p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-secondary-fixed">
           <span className="material-symbols-outlined">notifications</span>
           {threatCount > 0 && <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full animate-ping"></span>}

@@ -4,7 +4,10 @@ const SimulationContext = createContext(null);
 
 export function SimulationProvider({ children }) {
 
-  const [utcTime, setUtcTime] = useState(new Date().toISOString().substring(11, 19) + " UTC");
+  const getISTTime = () => {
+    return new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour12: false }) + " IST";
+  };
+  const [systemTime, setSystemTime] = useState(getISTTime());
   
   const [activeDrones, setActiveDrones] = useState(142);
   const [apiCalls, setApiCalls] = useState(1200000); 
@@ -17,8 +20,7 @@ export function SimulationProvider({ children }) {
   useEffect(() => {
     const timer = setInterval(() => {
     
-      const now = new Date();
-      setUtcTime(now.toISOString().substring(11, 19) + " UTC");
+      setSystemTime(getISTTime());
       
   
       setApiCalls(prev => prev + Math.floor(Math.random() * 50));
@@ -44,7 +46,7 @@ export function SimulationProvider({ children }) {
 
   return (
     <SimulationContext.Provider value={{
-      utcTime,
+      systemTime,
       activeDrones,
       apiCalls,
       threatCount,
