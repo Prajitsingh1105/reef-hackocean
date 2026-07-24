@@ -185,7 +185,7 @@ export default function MissionControl() {
 
      
       <div className="lg:col-span-8 flex flex-col gap-6 overflow-hidden">
-        <GlassPanel delay={0.5} active={true} className="w-full h-[450px] relative p-0 group overflow-hidden">
+        <GlassPanel delay={0.5} active={true} className="w-full h-[350px] md:h-[450px] relative p-0 group overflow-hidden">
           <div ref={mapContainerRef} className="absolute inset-0 w-full h-full z-0">
           </div>
           
@@ -318,15 +318,15 @@ export default function MissionControl() {
       </div>
 
       <div className="col-span-1 lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4">
-        <GlassPanel delay={0.9} className="col-span-1 lg:col-span-4 p-8 relative overflow-hidden flex flex-col justify-between">
+        <GlassPanel delay={0.9} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between">
           <div className="absolute -left-10 top-0 bottom-0 w-1/2 bg-contain bg-no-repeat bg-left opacity-70 pointer-events-none" style={{backgroundImage: "url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"}}></div>
-          <div className="relative z-10 ml-auto w-2/3">
+          <div className="relative z-10 ml-auto w-full sm:w-2/3">
             <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-2 text-[10px]">JOIN THE GUARDIAN NETWORK</h4>
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold leading-tight mb-4">
               Be the reason our oceans have a <span className="text-secondary cyan-glow-text">future.</span>
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant text-sm mb-6">Every action today protects a thousand species tomorrow.</p>
-            <div className="grid grid-cols-3 gap-2 mb-8 text-center text-[10px]">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 mb-8 text-center text-[10px] sm:text-left md:text-center">
               <div>
                 <span className="material-symbols-outlined text-secondary text-sm mb-1">verified_user</span>
                 <p className="text-on-surface font-bold">Real Impact</p>
@@ -350,7 +350,7 @@ export default function MissionControl() {
           </div>
         </GlassPanel>
 
-        <GlassPanel delay={1.0} className="col-span-1 lg:col-span-4 p-8 relative">
+        <GlassPanel delay={1.0} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative">
           <div className="flex justify-between items-center mb-6">
             <h4 className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-[10px]">VOLUNTEER SIGNUP</h4>
             <button className="text-on-surface-variant hover:text-on-surface"><span className="material-symbols-outlined text-sm">close</span></button>
@@ -371,7 +371,7 @@ export default function MissionControl() {
               <label className="block text-[10px] text-on-surface-variant mb-1">Email Address</label>
               <input className="w-full bg-background border border-outline-variant/50 rounded-lg p-2.5 text-sm text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary placeholder-on-surface-variant/50" placeholder="you@example.com" type="email"/>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[10px] text-on-surface-variant mb-1">Country</label>
                 <select className="w-full bg-background border border-outline-variant/50 rounded-lg p-2.5 text-sm text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
@@ -391,7 +391,7 @@ export default function MissionControl() {
           </form>
         </GlassPanel>
 
-        <GlassPanel delay={1.1} className="col-span-1 lg:col-span-4 p-8 relative flex flex-col">
+        <GlassPanel delay={1.1} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative flex flex-col">
           <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-widest text-[10px] mb-4">SECURE THE NEXT DEEP-SEA DRONE</h4>
           <div className="w-full h-32 flex items-center justify-center mb-4">
             <img className="max-h-full object-contain mix-blend-screen opacity-80" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
@@ -399,7 +399,7 @@ export default function MissionControl() {
           <div className="mt-auto">
             <p className="text-[10px] text-secondary mb-1">Community Funding Progress</p>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="font-display-lg text-4xl text-secondary cyan-glow-text">$287,450</span>
+              <span className="font-display-lg text-3xl sm:text-4xl text-secondary cyan-glow-text">$287,450</span>
               <span className="text-sm text-on-surface-variant">of $500,000</span>
             </div>
             <div className="flex items-center gap-3 mb-6">

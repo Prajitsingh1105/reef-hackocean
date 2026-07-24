@@ -77,7 +77,7 @@ export function MetricCard({ title, value, change, trend = "up", icon, colorClas
         </div>
         {!pulse && <div className={`w-2 h-2 rounded-full ${c.bg} ${c.shadow} group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)] transition-shadow duration-300`}></div>}
       </div>
-      <div className="font-display-lg text-display-lg text-on-surface mb-2">
+      <div className="font-display-lg text-[36px] sm:text-display-lg text-on-surface mb-2 leading-tight">
         <AnimatedNumber value={value} />
       </div>
       <div className={`flex items-center gap-2 font-label-sm text-label-sm ${trend === 'up' ? c.text : 'text-error'}`}>
