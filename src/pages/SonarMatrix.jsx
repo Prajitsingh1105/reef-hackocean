@@ -1,6 +1,41 @@
 import { GlassPanel } from "../components/ui/Components";
+import { useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export default function SonarMatrix() {
+  const [activeSector, setActiveSector] = useState('B');
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(16);
+    doc.text("Acoustic Event Log Report", 14, 22);
+    
+    doc.setFontSize(10);
+    const date = new Date().toUTCString();
+    doc.text(`Generated: ${date}`, 14, 30);
+    
+    const tableColumn = ["Event ID", "Type", "Timestamp (UTC)", "Location", "Confidence"];
+    const tableRows = [
+      ["#AE-4921", "Bio-Acoustic", "12:44:10", "Sector B, -840m", "98%"],
+      ["#AE-4920", "Anthropogenic", "12:41:05", "Sector A, -120m", "92%"],
+      ["#AE-4919", "Unknown", "12:38:55", "Sector B, -1500m", "45%"],
+      ["#AE-4918", "Bio-Acoustic", "12:30:12", "Sector B, -900m", "88%"]
+    ];
+    
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      theme: 'grid',
+      styles: { fontSize: 9, cellPadding: 3 },
+      headStyles: { fillColor: [0, 241, 254], textColor: [0, 32, 34] }
+    });
+    
+    doc.save("acoustic_event_log_report.pdf");
+  };
+
   return (
     <div 
       className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto"
@@ -85,11 +120,11 @@ export default function SonarMatrix() {
       </div>
 
       
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[800px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[800px]">
        
         <div className="col-span-1 lg:col-span-8 flex flex-col gap-6">
          
-          <GlassPanel delay={0.5} className="rounded-xl flex flex-col flex-1 relative overflow-hidden border border-outline-variant/30 p-0">
+          <GlassPanel delay={0.5} className="rounded-xl flex flex-col flex-1 min-h-[500px] lg:min-h-0 relative overflow-hidden border border-outline-variant/30 p-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-transparent z-20"></div>
             <div className="p-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container/50">
               <div className="flex items-center gap-2">
@@ -97,8 +132,18 @@ export default function SonarMatrix() {
                 <span className="px-2 py-0.5 rounded text-[10px] bg-secondary/20 text-secondary border border-secondary/30">LIVE</span>
               </div>
               <div className="flex gap-2">
-                <button className="px-3 py-1 rounded border border-outline-variant/50 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:border-secondary transition-colors">Sector A</button>
-                <button className="px-3 py-1 rounded border border-secondary text-label-sm font-label-sm text-secondary bg-secondary/10">Sector B</button>
+                <button 
+                  onClick={() => setActiveSector('A')}
+                  className={`px-3 py-1 rounded border text-label-sm font-label-sm transition-colors ${activeSector === 'A' ? 'border-secondary text-secondary bg-secondary/10' : 'border-outline-variant/50 text-on-surface-variant hover:text-on-surface hover:border-secondary'}`}
+                >
+                  Sector A
+                </button>
+                <button 
+                  onClick={() => setActiveSector('B')}
+                  className={`px-3 py-1 rounded border text-label-sm font-label-sm transition-colors ${activeSector === 'B' ? 'border-secondary text-secondary bg-secondary/10' : 'border-outline-variant/50 text-on-surface-variant hover:text-on-surface hover:border-secondary'}`}
+                >
+                  Sector B
+                </button>
               </div>
             </div>
             <div className="flex-1 p-4 grid grid-rows-2 gap-4">
@@ -138,7 +183,10 @@ export default function SonarMatrix() {
           <GlassPanel delay={0.6} className="rounded-xl h-64 flex flex-col border border-outline-variant/30 overflow-hidden p-0">
             <div className="p-3 border-b border-outline-variant/20 bg-surface-container/50 flex justify-between items-center">
               <span className="font-label-sm text-label-sm text-on-surface uppercase font-bold tracking-widest">Acoustic Event Log</span>
-              <button className="text-secondary flex items-center gap-1 font-label-sm text-label-sm hover:underline">
+              <button 
+                onClick={exportToPDF}
+                className="text-secondary flex items-center gap-1 font-label-sm text-label-sm hover:underline"
+              >
                 <span className="material-symbols-outlined text-sm">download</span> Export
               </button>
             </div>
@@ -163,7 +211,7 @@ export default function SonarMatrix() {
                   </tr>
                   <tr className="hover:bg-secondary/5 transition-colors cursor-pointer group">
                     <td className="p-3 text-secondary">#AE-4920</td>
-                    <td className="p-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error"></span> Anthropogenic</td>
+                    <td className="p-3 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-error"></span> Anthropogenic</td>
                     <td className="p-3 text-on-surface-variant">12:41:05</td>
                     <td className="p-3">Sector A, -120m</td>
                     <td className="p-3 text-right text-error">92%</td>
@@ -237,7 +285,7 @@ export default function SonarMatrix() {
                 <div className="w-8 h-8 rounded-full border-2 border-secondary border-t-transparent animate-spin flex-shrink-0"></div>
                 <div>
                   <div className="font-label-sm text-label-sm text-secondary">AI Analysis Active</div>
-                  <div className="text-xs text-on-surface-variant font-mono mt-0.5">Processing Sector B buffer...</div>
+                  <div className="text-xs text-on-surface-variant font-mono mt-0.5">Processing Sector {activeSector} buffer...</div>
                 </div>
               </div>
             </div>
