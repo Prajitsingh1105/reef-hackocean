@@ -1,6 +1,37 @@
 import { GlassPanel } from "../components/ui/Components";
+import { useRef } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export default function Reports() {
+  const tableRef = useRef(null);
+
+  const handleExportAll = () => {
+    if (!tableRef.current) return;
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.setTextColor(0, 241, 254);
+    doc.text("A.E.G.I.S - Full Reports Log", 14, 20);
+    
+    autoTable(doc, {
+      html: tableRef.current,
+      startY: 30,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 241, 254], textColor: [10, 14, 20] },
+      styles: { fillColor: [20, 24, 30], textColor: [200, 200, 200] },
+      alternateRowStyles: { fillColor: [30, 34, 40] },
+      columns: [
+        { header: 'Report ID', dataKey: 0 },
+        { header: 'Category', dataKey: 1 },
+        { header: 'Timestamp', dataKey: 2 },
+        { header: 'Author', dataKey: 3 },
+        { header: 'Status', dataKey: 4 }
+      ]
+    });
+    
+    doc.save("AEGIS_All_Reports.pdf");
+  };
+
   return (
     <div className="p-margin-mobile md:p-margin-desktop grid grid-cols-1 gap-6 w-full max-w-container-max mx-auto h-full flex-col">
       <style>{`
@@ -102,18 +133,18 @@ export default function Reports() {
           </GlassPanel>
 
           <GlassPanel delay={0.6} className="glass-panel rounded-xl p-6 flex-1 flex flex-col min-h-0">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
               <h3 className="font-label-md text-label-md text-secondary-container uppercase">File Repository</h3>
-              <div className="flex gap-2">
-                <button className="p-2 border border-outline-variant rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant"><span className="material-symbols-outlined text-sm">filter_list</span></button>
-                <div className="relative">
+              <div className="flex gap-2 w-full sm:w-auto">
+                <button className="p-2 border border-outline-variant rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant shrink-0"><span className="material-symbols-outlined text-sm">filter_list</span></button>
+                <div className="relative flex-1 sm:flex-none">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-                  <input className="bg-surface-container border border-outline-variant rounded pl-9 pr-4 py-1.5 text-sm font-label-md text-on-surface focus:border-secondary-container focus:ring-1 focus:ring-secondary-container focus:outline-none w-64 transition-all" placeholder="Search reports..." type="text"/>
+                  <input className="bg-surface-container border border-outline-variant rounded pl-9 pr-4 py-1.5 text-sm font-label-md text-on-surface focus:border-secondary-container focus:ring-1 focus:ring-secondary-container focus:outline-none w-full sm:w-64 transition-all" placeholder="Search reports..." type="text"/>
                 </div>
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto border border-outline-variant/30 rounded">
-              <table className="w-full text-left border-collapse">
+            <div className="flex-1 overflow-x-auto overflow-y-auto border border-outline-variant/30 rounded">
+              <table ref={tableRef} className="w-full text-left border-collapse min-w-[600px]">
                 <thead className="bg-surface-container-high sticky top-0 z-10">
                   <tr>
                     <th className="p-3 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant/30">Report ID</th>
@@ -236,7 +267,7 @@ export default function Reports() {
             </div>
             
             <div className="mt-auto pt-4">
-              <button className="w-full py-2 bg-transparent border border-secondary-container text-secondary-container hover:bg-secondary-container/10 transition-colors font-label-md rounded shadow-[0_0_10px_rgba(0,241,254,0.2)]">Export All Data</button>
+              <button onClick={handleExportAll} className="w-full py-2 bg-transparent border border-secondary-container text-secondary-container hover:bg-secondary-container/10 transition-colors font-label-md rounded shadow-[0_0_10px_rgba(0,241,254,0.2)]">Export All Data</button>
             </div>
           </div>
         </GlassPanel>
