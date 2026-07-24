@@ -88,10 +88,10 @@ npm run dev
 ---
 
 ## 👥 The Team
-- **Team Name:** [Insert Team Name]
-- **Team Leader:** [Insert Name] | [Insert Contact/Email]
+- **Team Name:** Kryptexx 
+- **Team Leader:** Harsh Gautam | gautamharsh409@gmail.com / +919140780539
 - **Event:** HackOcean 2026 - Round 2
-- **Problem Statement:** [Insert Problem Statement ID/Name]
+- **Problem Statement:** PS03 – Deep Sea Guardian | AI-Powered Deep Ocean Pollution & Biodiversity Monitoring
 
 ---
 <div align="center">
