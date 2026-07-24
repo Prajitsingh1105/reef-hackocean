@@ -1,6 +1,46 @@
 import { GlassPanel } from "../components/ui/Components";
+import { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function DataAnalytics() {
+  const chartRef = useRef(null);
+  const [filterMode, setFilterMode] = useState(0);
+  const filterLabels = [
+    "7-Day Aggregated Model",
+    "30-Day Trend Analysis",
+    "Year-to-Date Averages",
+    "Real-Time Anomalies"
+  ];
+  
+  const handleExportPDF = async () => {
+    if (!chartRef.current) return;
+    try {
+      const canvas = await html2canvas(chartRef.current, { backgroundColor: '#002022' });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width + 40, canvas.height + 60]
+      });
+      pdf.setFontSize(16);
+      pdf.setTextColor(0, 241, 254);
+      pdf.text("Coral Health vs Temperature Report", 20, 30);
+      pdf.setFontSize(10);
+      pdf.setTextColor(150, 150, 150);
+      pdf.text(`Filter Applied: ${filterLabels[filterMode]}`, 20, 45);
+      
+      pdf.addImage(imgData, 'PNG', 20, 55, canvas.width, canvas.height);
+      pdf.save("coral_health_report.pdf");
+    } catch (err) {
+      console.error("Export failed", err);
+    }
+  };
+
+  const handleFilterToggle = () => {
+    setFilterMode((prev) => (prev + 1) % filterLabels.length);
+  };
+
   return (
     <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto space-y-6">
       <style>{`
@@ -93,18 +133,28 @@ export default function DataAnalytics() {
         <div className="lg:col-span-2 space-y-6">
           
           <GlassPanel delay={0.5} className="rounded-xl p-6 h-[400px] flex flex-col">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
               <div>
                 <h3 className="font-label-md text-label-md text-on-surface uppercase tracking-widest mb-1">CORAL HEALTH VS TEMPERATURE</h3>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">7-Day Aggregated Model</p>
+                <p className="font-label-sm text-label-sm text-on-surface-variant">{filterLabels[filterMode]}</p>
               </div>
-              <div className="flex gap-2">
-                <button className="px-3 py-1 rounded border border-outline-variant/50 text-label-sm font-label-sm text-on-surface hover:border-secondary transition-colors">Export</button>
-                <button className="px-3 py-1 rounded border border-secondary text-secondary bg-secondary/10 text-label-sm font-label-sm hover:bg-secondary/20 transition-colors">Filter</button>
+              <div className="flex gap-2 self-end sm:self-auto">
+                <button 
+                  onClick={handleExportPDF}
+                  className="px-3 py-1 rounded border border-outline-variant/50 text-label-sm font-label-sm text-on-surface hover:border-secondary transition-colors flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-[16px]">download</span> Export
+                </button>
+                <button 
+                  onClick={handleFilterToggle}
+                  className="px-3 py-1 rounded border border-secondary text-secondary bg-secondary/10 text-label-sm font-label-sm hover:bg-secondary/20 transition-colors flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                </button>
               </div>
             </div>
             
-            <div className="flex-1 chart-grid-bg relative border-b border-l border-outline-variant/30 rounded-bl-sm">
+            <div ref={chartRef} className="flex-1 chart-grid-bg relative border-b border-l border-outline-variant/30 rounded-bl-sm p-4 bg-background">
               
               <div className="absolute -left-8 top-0 bottom-0 flex flex-col justify-between py-2 text-label-sm text-on-surface-variant font-label-sm text-right">
                 <span>80</span>
@@ -151,21 +201,20 @@ export default function DataAnalytics() {
                 </defs>
               </svg>
               
-             
-              <div className="absolute left-[300px] top-[100px] -translate-x-1/2 bg-surface-container-high border border-outline-variant p-2 rounded shadow-lg pointer-events-none">
-                <div className="text-label-sm font-label-sm text-on-surface mb-1">Thursday 14:00</div>
-                <div className="flex items-center gap-2 text-label-sm font-label-sm">
+              <div className="absolute left-[60%] top-[20%] md:top-[100px] -translate-x-1/2 bg-surface-container-high border border-outline-variant p-2 rounded shadow-lg pointer-events-none z-10 w-max">
+                <div className="text-[10px] md:text-label-sm font-label-sm text-on-surface mb-1">Thursday 14:00</div>
+                <div className="flex items-center gap-2 text-[10px] md:text-label-sm font-label-sm">
                   <span className="w-2 h-2 rounded-full bg-error"></span>
-                  <span className="text-on-surface-variant">Temp: 28.5°C</span>
+                  <span className="text-on-surface-variant">Temp: {28.5 + (filterMode * 0.4)}°C</span>
                 </div>
-                <div className="flex items-center gap-2 text-label-sm font-label-sm">
+                <div className="flex items-center gap-2 text-[10px] md:text-label-sm font-label-sm">
                   <span className="w-2 h-2 rounded-full bg-tertiary"></span>
-                  <span className="text-on-surface-variant">Health: 62%</span>
+                  <span className="text-on-surface-variant">Health: {62 - (filterMode * 5)}%</span>
                 </div>
               </div>
               
               
-              <div className="absolute left-[300px] top-0 bottom-0 w-px bg-outline-variant/50 pointer-events-none"></div>
+              <div className="absolute left-[60%] top-0 bottom-0 w-px bg-outline-variant/50 pointer-events-none z-0"></div>
             </div>
             
             
@@ -183,12 +232,12 @@ export default function DataAnalytics() {
 
           
           <GlassPanel delay={0.6} className="rounded-xl p-6 h-[350px] flex flex-col">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
               <div>
                 <h3 className="font-label-md text-label-md text-on-surface uppercase tracking-widest mb-1">BIODIVERSITY DISTRIBUTION</h3>
                 <p className="font-label-sm text-label-sm text-on-surface-variant">By Pelagic Zone (Depth)</p>
               </div>
-              <select className="bg-surface-container-high border-outline-variant/30 text-on-surface font-label-sm text-label-sm rounded focus:ring-secondary focus:border-secondary">
+              <select className="bg-surface-container-high border-outline-variant/30 text-on-surface font-label-sm text-label-sm rounded focus:ring-secondary focus:border-secondary self-end sm:self-auto">
                 <option>Sector Alpha</option>
                 <option>Sector Beta</option>
                 <option>Global View</option>
@@ -204,34 +253,34 @@ export default function DataAnalytics() {
               </div>
               
               
-              <div className="w-16 h-[80%] flex flex-col justify-end group">
+              <div className="w-12 md:w-16 h-[80%] flex flex-col justify-end group">
                 <div className="w-full h-[20%] bg-error/80 border-t border-x border-error hover:bg-error transition-colors relative">
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface p-1 text-xs rounded border border-outline-variant">Crit: 200</div>
                 </div>
                 <div className="w-full h-[30%] bg-primary/80 border border-primary hover:bg-primary transition-colors"></div>
                 <div className="w-full h-[50%] bg-tertiary/80 border border-tertiary hover:bg-tertiary transition-colors"></div>
-                <div className="text-center mt-2 font-label-sm text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4">Epipelagic<br/><span className="text-[10px]">(0-200m)</span></div>
+                <div className="text-center mt-2 font-label-sm text-[8px] md:text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4 w-20 md:w-24">Epipelagic<br/><span className="text-[8px] md:text-[10px]">(0-200m)</span></div>
               </div>
               
-              <div className="w-16 h-[60%] flex flex-col justify-end group">
+              <div className="w-12 md:w-16 h-[60%] flex flex-col justify-end group">
                 <div className="w-full h-[10%] bg-error/80 border-t border-x border-error hover:bg-error transition-colors"></div>
                 <div className="w-full h-[40%] bg-primary/80 border border-primary hover:bg-primary transition-colors"></div>
                 <div className="w-full h-[50%] bg-tertiary/80 border border-tertiary hover:bg-tertiary transition-colors"></div>
-                <div className="text-center mt-2 font-label-sm text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4">Mesopelagic<br/><span className="text-[10px]">(200-1k)</span></div>
+                <div className="text-center mt-2 font-label-sm text-[8px] md:text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4 w-20 md:w-24">Mesopelagic<br/><span className="text-[8px] md:text-[10px]">(200-1k)</span></div>
               </div>
               
-              <div className="w-16 h-[40%] flex flex-col justify-end group">
+              <div className="w-12 md:w-16 h-[40%] flex flex-col justify-end group">
                 <div className="w-full h-[5%] bg-error/80 border-t border-x border-error hover:bg-error transition-colors"></div>
                 <div className="w-full h-[25%] bg-primary/80 border border-primary hover:bg-primary transition-colors"></div>
                 <div className="w-full h-[70%] bg-tertiary/80 border border-tertiary hover:bg-tertiary transition-colors"></div>
-                <div className="text-center mt-2 font-label-sm text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4">Bathypelagic<br/><span className="text-[10px]">(1k-4k)</span></div>
+                <div className="text-center mt-2 font-label-sm text-[8px] md:text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4 w-20 md:w-24">Bathypelagic<br/><span className="text-[8px] md:text-[10px]">(1k-4k)</span></div>
               </div>
               
-              <div className="w-16 h-[20%] flex flex-col justify-end group">
+              <div className="w-12 md:w-16 h-[20%] flex flex-col justify-end group">
                 <div className="w-full h-[0%] bg-error/80 border-t border-x border-error hover:bg-error transition-colors"></div>
                 <div className="w-full h-[15%] bg-primary/80 border border-primary hover:bg-primary transition-colors"></div>
                 <div className="w-full h-[85%] bg-tertiary/80 border border-tertiary hover:bg-tertiary transition-colors"></div>
-                <div className="text-center mt-2 font-label-sm text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4">Abyssopelagic<br/><span className="text-[10px]">(4k-6k)</span></div>
+                <div className="text-center mt-2 font-label-sm text-[8px] md:text-label-sm text-on-surface-variant absolute -bottom-6 -ml-4 w-20 md:w-24">Abyssopelagic<br/><span className="text-[8px] md:text-[10px]">(4k-6k)</span></div>
               </div>
             </div>
           </GlassPanel>
