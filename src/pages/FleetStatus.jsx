@@ -4,7 +4,7 @@ import { useSimulation } from "../context/SimulationContext";
 export default function FleetStatus() {
   const { droneAlphaBattery, droneBetaBattery } = useSimulation();
   return (
-    <div className="p-margin-desktop w-full max-w-container-max mx-auto">
+    <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
         
         <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">

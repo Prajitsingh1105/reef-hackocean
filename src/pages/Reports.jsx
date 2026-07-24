@@ -2,7 +2,7 @@ import { GlassPanel } from "../components/ui/Components";
 
 export default function Reports() {
   return (
-    <div className="p-margin-desktop grid grid-cols-1 gap-6 w-full max-w-container-max mx-auto h-full flex-col">
+    <div className="p-margin-mobile md:p-margin-desktop grid grid-cols-1 gap-6 w-full max-w-container-max mx-auto h-full flex-col">
       <style>{`
         .glass-panel {
             background: rgba(10, 14, 20, 0.7);

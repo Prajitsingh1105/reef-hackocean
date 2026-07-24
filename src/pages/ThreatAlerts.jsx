@@ -2,7 +2,7 @@ import { GlassPanel } from "../components/ui/Components";
 
 export default function ThreatAlerts() {
   return (
-    <div className="p-margin-desktop w-full max-w-container-max mx-auto flex flex-col gap-6">
+    <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto flex flex-col gap-6">
       <style>{`
         .glow-active {
             border: 1px solid #00f1fe;

@@ -174,7 +174,7 @@ export default function MissionControl() {
   }, []);
 
   return (
-    <div className="p-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-6 w-full max-w-container-max mx-auto">
+    <div className="p-margin-mobile md:p-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-6 w-full max-w-container-max mx-auto">
       
       <div className="lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard delay={0.1} title="Active Drones" value={activeDrones} change="12 offline" trend="down" icon="settings_remote" colorClass="secondary" />

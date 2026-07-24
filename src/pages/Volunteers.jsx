@@ -2,7 +2,7 @@ import { GlassPanel } from "../components/ui/Components";
 
 export default function Volunteers() {
   return (
-    <div className="p-margin-desktop grid grid-cols-12 gap-6 w-full max-w-container-max mx-auto relative z-0">
+    <div className="p-margin-mobile md:p-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-6 w-full max-w-container-max mx-auto relative z-0">
       <style>{`
         .active-panel {
             border: 1px solid rgba(0, 241, 254, 0.5) !important;
@@ -50,7 +50,7 @@ export default function Volunteers() {
       </div>
 
       
-      <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="col-span-1 lg:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
         <GlassPanel delay={0.1} className="rounded-xl p-5 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4">

@@ -1,10 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
 export default function Layout() {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="flex bg-background text-on-surface font-body-md min-h-screen">
@@ -14,10 +16,10 @@ export default function Layout() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background to-background"></div>
       </div>
 
-      <Sidebar />
+      <Sidebar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
 
       <main className="flex-1 md:ml-72 flex flex-col min-h-screen relative w-full max-w-full overflow-hidden">
-        <Header />
+        <Header mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
         
         <div className="flex-1 overflow-y-auto mt-20 relative">
           <AnimatePresence mode="wait">

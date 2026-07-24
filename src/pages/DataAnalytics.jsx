@@ -2,7 +2,7 @@ import { GlassPanel } from "../components/ui/Components";
 
 export default function DataAnalytics() {
   return (
-    <div className="p-margin-desktop w-full max-w-container-max mx-auto space-y-6">
+    <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto space-y-6">
       <style>{`
         .cyan-glow {
             box-shadow: 0 0 10px rgba(0, 241, 254, 0.2), inset 0 0 15px rgba(0, 241, 254, 0.05);

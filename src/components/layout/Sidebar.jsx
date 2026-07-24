@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { path: "/", icon: "dashboard", label: "Mission Control" },
@@ -13,9 +13,21 @@ const navItems = [
   { path: "/settings", icon: "settings", label: "Settings" },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
   return (
-    <nav className="hidden md:flex flex-col h-full py-margin-desktop overflow-y-auto bg-surface-container-low dark:bg-surface-container-lowest text-secondary dark:text-secondary-fixed w-72 fixed left-0 top-0 border-r border-outline-variant/30 backdrop-blur-xl bg-surface-container/70 border-r border-secondary/10 shadow-2xl z-50">
+    <>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
+          />
+        )}
+      </AnimatePresence>
+      <nav className={`fixed flex flex-col h-full py-margin-desktop overflow-y-auto bg-surface-container-low dark:bg-surface-container-lowest text-secondary dark:text-secondary-fixed w-72 left-0 top-0 border-r border-outline-variant/30 backdrop-blur-xl bg-surface-container/70 shadow-2xl z-50 transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
       <div className="px-6 mb-8 flex items-center gap-4">
         <motion.img 
           initial={{ rotate: -180, opacity: 0 }}
@@ -50,6 +62,7 @@ export default function Sidebar() {
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={() => setMobileMenuOpen(false)}
             className={({ isActive }) =>
               `relative flex items-center px-6 py-3 gap-3 font-label-md text-label-md transition-colors ${
                 isActive
@@ -98,5 +111,6 @@ export default function Sidebar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }

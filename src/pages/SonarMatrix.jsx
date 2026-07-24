@@ -3,7 +3,7 @@ import { GlassPanel } from "../components/ui/Components";
 export default function SonarMatrix() {
   return (
     <div 
-      className="p-margin-desktop w-full max-w-container-max mx-auto"
+      className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto"
       style={{
         backgroundImage: "linear-gradient(rgba(0, 241, 254, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 241, 254, 0.05) 1px, transparent 1px)",
         backgroundSize: "20px 20px"
