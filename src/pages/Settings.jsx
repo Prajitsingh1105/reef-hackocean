@@ -1,6 +1,11 @@
 import { GlassPanel } from "../components/ui/Components";
+import { useState } from "react";
 
 export default function Settings() {
+  const [activeTab, setActiveTab] = useState("User Profile");
+  
+  const tabs = ["User Profile", "System Config", "Alert Rules", "API Keys", "Data Management"];
+
   return (
     <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto flex flex-col gap-6">
       <style>{`
@@ -36,6 +41,13 @@ export default function Settings() {
             border: 1px solid #00f1fe;
             box-shadow: 0 0 0 4px rgba(0, 241, 254, 0.2);
             outline: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
       `}</style>
       
@@ -107,64 +119,203 @@ export default function Settings() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
         
         <GlassPanel delay={0.5} className="lg:col-span-2 glass-panel rounded-xl flex flex-col">
-          <div className="border-b border-outline-variant/30 px-6 py-4 flex gap-6 overflow-x-auto">
-            <button className="font-label-md text-label-md text-secondary border-b-2 border-secondary pb-4 -mb-[17px] whitespace-nowrap">User Profile</button>
-            <button className="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors pb-4 whitespace-nowrap">System Config</button>
-            <button className="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors pb-4 whitespace-nowrap">Alert Rules</button>
-            <button className="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors pb-4 whitespace-nowrap">API Keys</button>
-            <button className="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors pb-4 whitespace-nowrap">Data Management</button>
+          <div className="border-b border-outline-variant/30 px-6 py-4 flex gap-6 overflow-x-auto hide-scrollbar">
+            {tabs.map((tab) => (
+              <button 
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`font-label-md text-label-md whitespace-nowrap pb-4 -mb-[17px] transition-colors ${activeTab === tab ? 'text-secondary border-b-2 border-secondary' : 'text-on-surface-variant hover:text-on-surface'}`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
           
-          <div className="p-8 flex-1 flex flex-col">
-            <div className="flex items-start gap-8 mb-8">
-              <div className="relative group cursor-pointer">
-                <img className="w-24 h-24 rounded-full object-cover border-2 border-secondary" alt="Aqua Guardian" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvsnt6yFIlwZ0UZ21SIcQd4H6WRkaUUdOOURLckXUMuqi43qDKv_FVRsFePThpBbhNTjLfaDrnsdqC0c05AxhSXu0-aAuXehXatpTDj9kD3YCVmnvOnDgtDTABb83cRT-2fVfvYK9ymdxX6-df-r3rulD7tGex9Ji-ixUnoTZzc8lQS6nfAnItTkH64mK9NeFn8PEZ2j17v37wwGtEDRvoDIvGssQEPBPQkS6dDB8aKlopkFjzpZWd"/>
-                <div className="absolute inset-0 bg-background/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="material-symbols-outlined text-secondary">edit</span>
+          <div className="p-6 sm:p-8 flex-1 flex flex-col overflow-y-auto">
+            {activeTab === "User Profile" && (
+              <>
+                <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 mb-8">
+                  <div className="relative group cursor-pointer shrink-0">
+                    <img className="w-24 h-24 rounded-full object-cover border-2 border-secondary" alt="Aqua Guardian" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvsnt6yFIlwZ0UZ21SIcQd4H6WRkaUUdOOURLckXUMuqi43qDKv_FVRsFePThpBbhNTjLfaDrnsdqC0c05AxhSXu0-aAuXehXatpTDj9kD3YCVmnvOnDgtDTABb83cRT-2fVfvYK9ymdxX6-df-r3rulD7tGex9Ji-ixUnoTZzc8lQS6nfAnItTkH64mK9NeFn8PEZ2j17v37wwGtEDRvoDIvGssQEPBPQkS6dDB8aKlopkFjzpZWd"/>
+                    <div className="absolute inset-0 bg-background/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="material-symbols-outlined text-secondary">edit</span>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-headline-md text-headline-md text-on-surface mb-1">Aqua Guardian</h3>
+                    <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">Mission Lead • Level 7 Clearance</p>
+                    <div className="flex flex-wrap gap-4">
+                      <button className="px-4 py-2 rounded-md font-label-md text-label-md bg-secondary/10 text-secondary border border-secondary/30 hover:bg-secondary/20 transition-colors">Change Avatar</button>
+                      <button className="px-4 py-2 rounded-md font-label-md text-label-md text-error hover:bg-error/10 transition-colors">Remove</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-headline-md text-headline-md text-on-surface mb-1">Aqua Guardian</h3>
-                <p className="font-label-sm text-label-sm text-on-surface-variant mb-4">Mission Lead • Level 7 Clearance</p>
-                <div className="flex gap-4">
-                  <button className="px-4 py-2 rounded-md font-label-md text-label-md bg-secondary/10 text-secondary border border-secondary/30 hover:bg-secondary/20 transition-colors">Change Avatar</button>
-                  <button className="px-4 py-2 rounded-md font-label-md text-label-md text-error hover:bg-error/10 transition-colors">Remove</button>
-                </div>
-              </div>
-            </div>
 
-            <form className="space-y-6 max-w-2xl">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Display Name</label>
-                  <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="text" defaultValue="Aqua Guardian"/>
+                <form className="space-y-6 max-w-2xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Display Name</label>
+                      <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="text" defaultValue="Aqua Guardian"/>
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Email Address</label>
+                      <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="email" defaultValue="lead@reef.org"/>
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Role</label>
+                      <select className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md appearance-none">
+                        <option>Mission Lead</option>
+                        <option>Analyst</option>
+                        <option>Field Operator</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Timezone</label>
+                      <select className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md appearance-none">
+                        <option>UTC (Coordinated Universal Time)</option>
+                        <option>PST (Pacific Standard Time)</option>
+                        <option>EST (Eastern Standard Time)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="pt-6 border-t border-outline-variant/30 flex justify-end gap-4">
+                    <button className="px-6 py-2 rounded-md font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors border border-outline-variant" type="button">Cancel</button>
+                    <button className="btn-primary px-6 py-2 rounded-md font-label-md text-label-md font-bold" type="button">Save Changes</button>
+                  </div>
+                </form>
+              </>
+            )}
+
+            {activeTab === "System Config" && (
+              <div className="space-y-6 max-w-2xl">
+                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">Core Telemetry Settings</h3>
+                <p className="font-label-sm text-on-surface-variant mb-6">Manage global polling rates and subsystem thresholds.</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block font-label-sm text-on-surface-variant mb-2">Drone Polling Interval (ms)</label>
+                    <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="number" defaultValue="2500"/>
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-on-surface-variant mb-2">Sonar Matrix Refresh Rate (Hz)</label>
+                    <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="number" defaultValue="60"/>
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-on-surface-variant mb-2">Telemetry Fallback Protocol</label>
+                    <select className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md appearance-none">
+                      <option>Use Satellite (High Latency)</option>
+                      <option>Use VHF (Local Only)</option>
+                      <option>Cache Locally</option>
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Email Address</label>
-                  <input className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md" type="email" defaultValue="lead@reef.org"/>
-                </div>
-                <div>
-                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Role</label>
-                  <select className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md appearance-none">
-                    <option>Mission Lead</option>
-                    <option>Analyst</option>
-                    <option>Field Operator</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">Timezone</label>
-                  <select className="w-full input-field rounded-md px-4 py-2 text-on-surface font-body-md appearance-none">
-                    <option>UTC (Coordinated Universal Time)</option>
-                    <option>PST (Pacific Standard Time)</option>
-                    <option>EST (Eastern Standard Time)</option>
-                  </select>
+                <div className="pt-6 border-t border-outline-variant/30 flex justify-end gap-4 mt-6">
+                  <button className="px-6 py-2 rounded-md font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors border border-outline-variant" type="button">Discard</button>
+                  <button className="btn-primary px-6 py-2 rounded-md font-label-md text-label-md font-bold" type="button">Apply Config</button>
                 </div>
               </div>
-              <div className="pt-6 border-t border-outline-variant/30 flex justify-end gap-4">
-                <button className="px-6 py-2 rounded-md font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors border border-outline-variant" type="button">Cancel</button>
-                <button className="btn-primary px-6 py-2 rounded-md font-label-md text-label-md font-bold" type="button">Save Changes</button>
+            )}
+
+            {activeTab === "Alert Rules" && (
+              <div className="space-y-6 max-w-2xl">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface">Automated Threat Triggers</h3>
+                  <button className="text-secondary font-label-sm hover:underline">+ Add New Rule</button>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="p-4 border border-outline-variant/30 rounded-lg bg-surface-container-high/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                    <div>
+                      <p className="font-label-md text-on-surface">Thermal Anomalies</p>
+                      <p className="font-label-sm text-on-surface-variant">Trigger if localized temp exceeds +2.5°C over 24h.</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="px-2 py-1 bg-error/20 text-error rounded text-[10px] uppercase border border-error/30">Critical Severity</span>
+                      <button className="text-on-surface-variant hover:text-error transition-colors"><span className="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border border-outline-variant/30 rounded-lg bg-surface-container-high/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                    <div>
+                      <p className="font-label-md text-on-surface">Acoustic Object Match</p>
+                      <p className="font-label-sm text-on-surface-variant">Trigger on &gt;85% confidence match for 'Ghost Net'.</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="px-2 py-1 bg-secondary/20 text-secondary rounded text-[10px] uppercase border border-secondary/30">High Severity</span>
+                      <button className="text-on-surface-variant hover:text-error transition-colors"><span className="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </form>
+            )}
+
+            {activeTab === "API Keys" && (
+              <div className="space-y-6 max-w-2xl">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface">Active Access Tokens</h3>
+                  <button className="btn-primary px-4 py-1.5 rounded-md font-label-sm">Generate Key</button>
+                </div>
+                
+                <div className="border border-outline-variant/30 rounded-lg overflow-hidden overflow-x-auto">
+                  <table className="w-full text-left font-label-sm min-w-[500px]">
+                    <thead className="bg-surface-container-high">
+                      <tr>
+                        <th className="p-3 text-on-surface-variant font-medium border-b border-outline-variant/30">Key Name</th>
+                        <th className="p-3 text-on-surface-variant font-medium border-b border-outline-variant/30">Token</th>
+                        <th className="p-3 text-on-surface-variant font-medium border-b border-outline-variant/30">Last Used</th>
+                        <th className="p-3 text-on-surface-variant font-medium border-b border-outline-variant/30">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-surface-container/50">
+                      <tr className="border-b border-outline-variant/10">
+                        <td className="p-3 text-on-surface">Main Reporting App</td>
+                        <td className="p-3 font-mono text-tertiary">sk_test_...89f2</td>
+                        <td className="p-3 text-on-surface-variant">2 hours ago</td>
+                        <td className="p-3"><button className="text-error hover:underline text-xs">Revoke</button></td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 text-on-surface">Public Node Analytics</td>
+                        <td className="p-3 font-mono text-tertiary">sk_live_...a1b4</td>
+                        <td className="p-3 text-on-surface-variant">5 mins ago</td>
+                        <td className="p-3"><button className="text-error hover:underline text-xs">Revoke</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "Data Management" && (
+              <div className="space-y-6 max-w-2xl">
+                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">Storage & Sync</h3>
+                <p className="font-label-sm text-on-surface-variant mb-6">Manage local caching and central database sync operations.</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 border border-outline-variant/30 rounded-lg bg-surface-container-high/50 flex flex-col justify-between min-h-[8rem]">
+                    <div>
+                      <p className="font-label-md text-on-surface">Clear Local Cache</p>
+                      <p className="font-label-sm text-on-surface-variant mt-1">Frees up 2.4 GB of local space.</p>
+                    </div>
+                    <button className="self-start text-tertiary border border-tertiary/50 hover:bg-tertiary/10 px-3 py-1 rounded text-xs transition-colors mt-4">Clear Cache</button>
+                  </div>
+                  
+                  <div className="p-4 border border-outline-variant/30 rounded-lg bg-surface-container-high/50 flex flex-col justify-between min-h-[8rem]">
+                    <div>
+                      <p className="font-label-md text-on-surface">Force Central Sync</p>
+                      <p className="font-label-sm text-on-surface-variant mt-1">Push 42 pending reports to main DB.</p>
+                    </div>
+                    <button className="self-start text-secondary border border-secondary/50 hover:bg-secondary/10 px-3 py-1 rounded text-xs transition-colors mt-4">Initiate Sync</button>
+                  </div>
+                  
+                  <div className="p-4 border border-outline-variant/30 rounded-lg bg-surface-container-high/50 flex flex-col justify-between min-h-[8rem] sm:col-span-2">
+                    <div>
+                      <p className="font-label-md text-error">Danger Zone: Purge All Logs</p>
+                      <p className="font-label-sm text-on-surface-variant mt-1">Permanently deletes all historical telemetry older than 90 days. This action cannot be undone.</p>
+                    </div>
+                    <button className="self-start bg-error/10 text-error border border-error/50 hover:bg-error/20 px-4 py-1.5 rounded text-xs transition-colors mt-4 font-bold">Purge Data</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </GlassPanel>
 
