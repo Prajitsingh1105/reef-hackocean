@@ -87,7 +87,7 @@ export default function ThreatAlerts() {
             </div>
             <div className="flex-1 overflow-y-auto p-2 space-y-2">
 
-              <div className="grid grid-cols-12 gap-4 px-4 py-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider border-b border-outline-variant/10">
+              <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider border-b border-outline-variant/10">
                 <div className="col-span-2">ID / Time</div>
                 <div className="col-span-3">Type</div>
                 <div className="col-span-2">Severity</div>
@@ -95,43 +95,53 @@ export default function ThreatAlerts() {
                 <div className="col-span-2 text-right">Action</div>
               </div>
               
-              <div className="grid grid-cols-12 gap-4 px-4 py-3 items-center rounded bg-error/10 border border-error/30 cursor-pointer hover:bg-error/20 transition-colors">
-                <div className="col-span-2 font-label-md text-xs">
-                  <div className="text-on-surface">TRT-892</div>
-                  <div className="text-on-surface-variant opacity-70">12:30 UTC</div>
+              <div className="flex flex-col md:grid md:grid-cols-12 gap-2 md:gap-4 px-4 py-3 items-start md:items-center rounded bg-error/10 border border-error/30 cursor-pointer hover:bg-error/20 transition-colors">
+                <div className="w-full md:col-span-2 flex justify-between md:block items-center">
+                  <div className="font-label-md text-xs">
+                    <span className="text-on-surface font-bold">TRT-892</span>
+                    <span className="text-on-surface-variant opacity-70 ml-2 md:ml-0 md:block">12:30 UTC</span>
+                  </div>
+                  <div className="md:hidden">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-label-sm bg-error/20 text-error border border-error/30">CRITICAL</span>
+                  </div>
                 </div>
-                <div className="col-span-3 font-body-sm text-sm text-on-surface flex items-center gap-2">
+                <div className="w-full md:col-span-3 font-body-sm text-sm text-on-surface flex items-center gap-2 mt-1 md:mt-0">
                   <span className="material-symbols-outlined text-error text-[18px]">phishing</span>
                   Illegal Trawling
                 </div>
-                <div className="col-span-2">
+                <div className="hidden md:block col-span-2">
                   <span className="px-2 py-0.5 rounded text-[10px] font-label-sm bg-error/20 text-error border border-error/30">CRITICAL</span>
                 </div>
-                <div className="col-span-3 font-label-md text-xs text-on-surface-variant">
-                  Sec 4G (-120m)
+                <div className="w-full md:col-span-3 font-label-md text-xs text-on-surface-variant mt-1 md:mt-0">
+                  <span className="md:hidden font-bold mr-1">Location:</span>Sec 4G (-120m)
                 </div>
-                <div className="col-span-2 text-right">
-                  <button className="text-secondary hover:text-secondary-fixed text-xs font-label-md uppercase">Dispatch</button>
+                <div className="w-full md:col-span-2 text-left md:text-right mt-3 md:mt-0 pt-3 md:pt-0 border-t border-error/20 md:border-t-0">
+                  <button className="text-secondary hover:text-secondary-fixed text-xs font-label-md uppercase w-full md:w-auto">Dispatch</button>
                 </div>
               </div>
               
-              <div className="grid grid-cols-12 gap-4 px-4 py-3 items-center rounded hover:bg-surface-container-highest/30 transition-colors border border-transparent hover:border-outline-variant/20 cursor-pointer">
-                <div className="col-span-2 font-label-md text-xs">
-                  <div className="text-on-surface">TRT-891</div>
-                  <div className="text-on-surface-variant opacity-70">11:15 UTC</div>
+              <div className="flex flex-col md:grid md:grid-cols-12 gap-2 md:gap-4 px-4 py-3 items-start md:items-center rounded hover:bg-surface-container-highest/30 transition-colors border border-transparent hover:border-outline-variant/20 cursor-pointer mt-2 md:mt-0">
+                <div className="w-full md:col-span-2 flex justify-between md:block items-center">
+                  <div className="font-label-md text-xs">
+                    <span className="text-on-surface font-bold">TRT-891</span>
+                    <span className="text-on-surface-variant opacity-70 ml-2 md:ml-0 md:block">11:15 UTC</span>
+                  </div>
+                  <div className="md:hidden">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-label-sm bg-[#ffca28]/10 text-[#ffca28] border border-[#ffca28]/30">HIGH</span>
+                  </div>
                 </div>
-                <div className="col-span-3 font-body-sm text-sm text-on-surface flex items-center gap-2">
+                <div className="w-full md:col-span-3 font-body-sm text-sm text-on-surface flex items-center gap-2 mt-1 md:mt-0">
                   <span className="material-symbols-outlined text-[18px] text-[#ffca28]">recycling</span>
                   Ghost Net Cluster
                 </div>
-                <div className="col-span-2">
+                <div className="hidden md:block col-span-2">
                   <span className="px-2 py-0.5 rounded text-[10px] font-label-sm bg-[#ffca28]/10 text-[#ffca28] border border-[#ffca28]/30">HIGH</span>
                 </div>
-                <div className="col-span-3 font-label-md text-xs text-on-surface-variant">
-                  Sec 2B (-450m)
+                <div className="w-full md:col-span-3 font-label-md text-xs text-on-surface-variant mt-1 md:mt-0">
+                  <span className="md:hidden font-bold mr-1">Location:</span>Sec 2B (-450m)
                 </div>
-                <div className="col-span-2 text-right">
-                  <button className="text-secondary hover:text-secondary-fixed text-xs font-label-md uppercase">Review</button>
+                <div className="w-full md:col-span-2 text-left md:text-right mt-3 md:mt-0 pt-3 md:pt-0 border-t border-outline-variant/20 md:border-t-0">
+                  <button className="text-secondary hover:text-secondary-fixed text-xs font-label-md uppercase w-full md:w-auto">Review</button>
                 </div>
               </div>
             </div>
@@ -162,7 +172,7 @@ export default function ThreatAlerts() {
                 <div className="absolute bottom-2 left-2 text-[10px] font-label-sm text-secondary bg-background/80 px-1 rounded">CAM-FEED-04</div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="text-[10px] text-on-surface-variant uppercase font-label-sm tracking-wider">Classification</p>
                   <p className="text-sm text-on-surface font-medium mt-1">Illegal Trawling Vessel</p>
