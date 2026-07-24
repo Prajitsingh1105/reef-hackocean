@@ -21,11 +21,6 @@ export function SimulationProvider({ children }) {
     const timer = setInterval(() => {
     
       setSystemTime(getISTTime());
-      
-  
-      setApiCalls(prev => prev + Math.floor(Math.random() * 50));
-      
-  
       if (Math.random() > 0.8) {
         setDroneAlphaBattery(prev => Math.max(0, prev - 1));
       }

@@ -318,9 +318,9 @@ export default function MissionControl() {
       </div>
 
       <div className="col-span-1 lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4">
-        <GlassPanel delay={0.9} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between">
-          <div className="absolute -left-10 top-0 bottom-0 w-1/2 bg-contain bg-no-repeat bg-left opacity-70 pointer-events-none" style={{backgroundImage: "url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"}}></div>
-          <div className="relative z-10 ml-auto w-full sm:w-2/3">
+        <GlassPanel delay={0.9} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between group">
+          <div className="absolute -inset-20 bg-gradient-to-tr from-secondary/20 to-transparent opacity-50 blur-3xl pointer-events-none group-hover:opacity-80 transition-opacity duration-1000"></div>
+          <div className="relative z-10 w-full h-full flex flex-col justify-between">
             <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-2 text-[10px]">JOIN THE GUARDIAN NETWORK</h4>
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold leading-tight mb-4">
               Be the reason our oceans have a <span className="text-secondary cyan-glow-text">future.</span>
@@ -393,14 +393,17 @@ export default function MissionControl() {
 
         <GlassPanel delay={1.1} className="col-span-1 lg:col-span-4 p-6 sm:p-8 relative flex flex-col">
           <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-widest text-[10px] mb-4">SECURE THE NEXT DEEP-SEA DRONE</h4>
-          <div className="w-full h-32 flex items-center justify-center mb-4">
-            <img className="max-h-full object-contain mix-blend-screen opacity-80" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+          <div className="w-full h-32 flex items-center justify-center mb-4 relative">
+            <div className="w-24 h-24 rounded-full border border-secondary/40 animate-[spin_6s_linear_infinite] absolute"></div>
+            <div className="w-16 h-16 rounded-full border-t border-b border-tertiary animate-[spin_4s_linear_infinite_reverse] absolute"></div>
+            <div className="w-28 h-28 rounded-full border border-dashed border-outline-variant/30 animate-[spin_10s_linear_infinite] absolute"></div>
+            <span className="material-symbols-outlined text-[40px] text-secondary cyan-glow-text relative z-10">settings_remote</span>
           </div>
           <div className="mt-auto">
             <p className="text-[10px] text-secondary mb-1">Community Funding Progress</p>
-            <div className="flex items-baseline gap-2 mb-2">
-              <span className="font-display-lg text-3xl sm:text-4xl text-secondary cyan-glow-text">$287,450</span>
-              <span className="text-sm text-on-surface-variant">of $500,000</span>
+            <div className="flex flex-wrap items-baseline gap-2 mb-2">
+              <span className="font-display-lg text-3xl sm:text-4xl text-secondary cyan-glow-text">₹2,38,74,500</span>
+              <span className="text-sm text-on-surface-variant">of ₹5,00,00,000</span>
             </div>
             <div className="flex items-center gap-3 mb-6">
               <div className="h-3 flex-1 bg-surface-container rounded-full overflow-hidden border border-outline-variant/30">
