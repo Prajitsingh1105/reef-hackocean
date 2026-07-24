@@ -431,7 +431,7 @@ export default function MissionControl() {
             <button className="w-full py-3 rounded-lg bg-surface-container border border-secondary/50 text-secondary hover:bg-secondary/10 transition-colors flex items-center justify-center gap-2 font-label-md text-sm mb-2">
               <span className="material-symbols-outlined text-sm">favorite</span> Donate to the Mission
             </button>
-            <p className="text-center text-[10px] text-on-surface-variant">Every dollar drives the mission forward.</p>
+            <p className="text-center text-[10px] text-on-surface-variant">Every rupee drives the mission forward.</p>
           </div>
         </GlassPanel>
       </div>
