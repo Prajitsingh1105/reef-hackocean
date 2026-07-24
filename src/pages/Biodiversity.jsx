@@ -1,6 +1,82 @@
 import { GlassPanel } from "../components/ui/Components";
+import { useEffect, useRef } from "react";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export default function Biodiversity() {
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (mapRef.current || !mapContainerRef.current) return;
+    const map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: {
+        version: 8,
+        sources: {
+          'satellite': {
+            type: 'raster',
+            tiles: [
+              'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            ],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'satellite-layer',
+            type: 'raster',
+            source: 'satellite',
+            minzoom: 0,
+            maxzoom: 19
+          }
+        ]
+      },
+      center: [145.2000, 15.3500],
+      zoom: 11,
+      pitch: 60,
+      bearing: 30
+    });
+    mapRef.current = map;
+
+    map.on('load', () => {
+      map.resize();
+
+      // Staghorn Cluster Marker
+      const marker1El = document.createElement('div');
+      marker1El.className = 'relative flex flex-col items-center z-20 pointer-events-none';
+      marker1El.innerHTML = `
+        <div class="w-20 h-20 rounded-full border border-secondary/50 animate-ping absolute"></div>
+        <div class="w-4 h-4 bg-secondary rounded-full shadow-[0_0_15px_rgba(0,241,254,1)]"></div>
+        <div class="mt-2 bg-surface-container-high/90 backdrop-blur-sm border border-secondary/50 px-3 py-1.5 rounded text-xs font-label-sm text-on-surface text-center whitespace-nowrap">
+          Staghorn Cluster<br/><span class="text-tertiary">Healthy</span>
+        </div>
+      `;
+      new maplibregl.Marker({ element: marker1El })
+        .setLngLat([145.18, 15.36])
+        .addTo(map);
+
+      // Bleaching Alert Marker
+      const marker2El = document.createElement('div');
+      marker2El.className = 'relative flex flex-col items-center z-20 pointer-events-none';
+      marker2El.innerHTML = `
+        <div class="w-16 h-16 rounded-full border border-error/50 animate-ping absolute" style="animation-delay: 500ms"></div>
+        <div class="w-4 h-4 bg-error rounded-full shadow-[0_0_15px_rgba(255,180,171,1)]"></div>
+        <div class="mt-2 bg-surface-container-high/90 backdrop-blur-sm border border-error/50 px-3 py-1.5 rounded text-xs font-label-sm text-on-surface text-center whitespace-nowrap">
+          Bleaching Alert<br/><span class="text-error">Critical</span>
+        </div>
+      `;
+      new maplibregl.Marker({ element: marker2El })
+        .setLngLat([145.22, 15.33])
+        .addTo(map);
+    });
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
+
   return (
     <div className="p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto flex flex-col gap-6">
       <style>{`
@@ -125,43 +201,28 @@ export default function Biodiversity() {
         <div className="md:col-span-8 flex flex-col gap-6">
           
           <GlassPanel delay={0.5} className="glass-pod rounded-xl flex flex-col relative overflow-hidden p-6 min-h-[500px] active-glow">
-            <div className="flex justify-between items-center mb-4 z-10 relative">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 z-10 relative gap-4 md:gap-0">
               <div className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
                 <span className="material-symbols-outlined text-secondary text-sm">map</span> Coral Reef Vitality Map
               </div>
-              <div className="flex gap-2">
-                <button className="btn-primary px-4 py-2 rounded-md font-label-md text-label-md text-sm">Vitality Heatmap</button>
-                <button className="btn-ghost px-4 py-2 rounded-md font-label-md text-label-md text-sm">Species Tracker</button>
+              <div className="flex flex-wrap sm:flex-nowrap gap-2 self-start md:self-auto w-full md:w-auto">
+                <button className="btn-primary px-4 py-2 rounded-md font-label-md text-label-md text-sm flex-1 md:flex-auto">Vitality Heatmap</button>
+                <button className="btn-ghost px-4 py-2 rounded-md font-label-md text-label-md text-sm flex-1 md:flex-auto">Species Tracker</button>
               </div>
             </div>
             
-            
-            <div className="absolute inset-0 top-16 bottom-16 bg-surface-container-lowest perspective-grid border-y border-outline-variant/30 overflow-hidden">
-              <div className="w-full h-full bg-cover bg-center opacity-60" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAZFeZB-04O2LcR860MyUK2Ws6vP3AaABcVpVXGBcvoe2hk6CTay1vMT8e2TZyb5N7gLzm63Pn48PTMb2QJ0sRNwUk0DmBbHZNOUx8fwlFz8ZNDM65Qzzn5hc0nK1x1g-_1Ffcnl9f0m9a389hwr8rlQHa-8ha9sAbACuFsJr6h8UoxDWRgAz2jZqUIMWlOo5vX64_egLC9YOc-_N1hBhND77vIOSidOWoQU4vc3KeJTOtlnB4Q2Rs9')"}}></div>
-              
-              
-              <div className="absolute top-[40%] left-[30%]">
-                <div className="relative w-4 h-4 rounded-full bg-secondary shadow-[0_0_15px_rgba(0,241,254,1)] blinking-dot"></div>
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-high/90 backdrop-blur-sm border border-secondary/50 px-3 py-1.5 rounded text-xs font-label-sm text-on-surface z-20">
-                  Staghorn Cluster<br/><span className="text-tertiary">Healthy</span>
-                </div>
-              </div>
-              <div className="absolute top-[60%] left-[65%]">
-                <div className="relative w-4 h-4 rounded-full bg-error shadow-[0_0_15px_rgba(255,180,171,1)]"></div>
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-high/90 backdrop-blur-sm border border-error/50 px-3 py-1.5 rounded text-xs font-label-sm text-on-surface z-20">
-                  Bleaching Alert<br/><span className="text-error">Critical</span>
-                </div>
-              </div>
+            <div className="absolute inset-0 top-[88px] bottom-[72px] border-y border-outline-variant/30 overflow-hidden pointer-events-auto z-0">
+              <div ref={mapContainerRef} className="w-full h-full"></div>
             </div>
             
-            <div className="absolute bottom-6 left-6 right-6 flex justify-between items-center z-10 bg-surface-container-high/50 p-3 rounded-lg backdrop-blur-md border border-outline-variant/30 mt-auto">
-              <div className="flex items-center gap-4 text-xs font-label-sm text-on-surface-variant">
+            <div className="absolute bottom-6 left-4 right-4 sm:left-6 sm:right-6 flex flex-col sm:flex-row justify-between items-center z-10 bg-surface-container-high/50 p-3 rounded-lg backdrop-blur-md border border-outline-variant/30 mt-auto gap-3 sm:gap-0">
+              <div className="flex items-center gap-4 text-xs font-label-sm text-on-surface-variant w-full justify-center sm:justify-start sm:w-auto">
                 <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">touch_app</span> Drag to Rotate</span>
                 <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">mouse</span> Scroll to Zoom</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full justify-center sm:justify-end sm:w-auto">
                 <span className="text-xs font-label-sm">Vitality:</span>
-                <div className="w-32 h-2 rounded-full bg-gradient-to-r from-error via-tertiary to-secondary"></div>
+                <div className="w-full sm:w-32 h-2 rounded-full bg-gradient-to-r from-error via-tertiary to-secondary"></div>
               </div>
             </div>
           </GlassPanel>
@@ -259,8 +320,8 @@ export default function Biodiversity() {
                 <div className="font-label-sm text-label-sm text-on-surface-variant mb-2 uppercase">Habitat Range Map</div>
                 <div className="h-24 rounded border border-outline-variant/30 bg-surface-container-lowest relative overflow-hidden flex items-center justify-center">
                   <div className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDVnasD4itp0ryDqSxXuy7VHvtRry7M8-SckZudASwUNbwiet_j4ZY6e9BcZlG0_Suk0XavhJrfne8-wuCUaQwVXDX-DX1dfDaL73tS5TTg4gE1yIDpXLvtSYF5qbbVFK8Tadwzbbjfkj9WxfXKm-MMJagyAi2xaBQndGFzWxQi98aq5IPQgnquf7ew1nmDDBzttsZR003JHujRMI8Ml2aOSlBrMhBOQ7NlA9cSB-3MCTsESsDvb_gx')"}}></div>
-                  <div class="w-12 h-6 border border-secondary rounded-full absolute bg-secondary/10 flex items-center justify-center shadow-[0_0_10px_rgba(0,241,254,0.3)]">
-                    <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                  <div className="w-12 h-6 border border-secondary rounded-full absolute bg-secondary/10 flex items-center justify-center shadow-[0_0_10px_rgba(0,241,254,0.3)]">
+                    <div className="w-2 h-2 bg-secondary rounded-full"></div>
                   </div>
                 </div>
               </div>
@@ -292,11 +353,11 @@ export default function Biodiversity() {
                   <span className="text-tertiary">84.2%</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2"><div class="w-2 h-2 bg-secondary rounded-full"></div> <span className="text-on-surface">At Risk</span></div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-secondary rounded-full"></div> <span className="text-on-surface">At Risk</span></div>
                   <span className="text-secondary">10.3%</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2"><div class="w-2 h-2 bg-error rounded-full"></div> <span className="text-on-surface">Critical</span></div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-error rounded-full"></div> <span className="text-on-surface">Critical</span></div>
                   <span className="text-error">5.5%</span>
                 </div>
               </div>
